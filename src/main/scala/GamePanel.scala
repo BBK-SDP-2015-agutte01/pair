@@ -5,6 +5,10 @@ import javax.swing.{JPanel, Timer}
 
 import scala.beans.BeanProperty
 
+
+/**
+ * An instance represents the game panel.
+ */
 class GamePanel(private var window: GUI, b: Board) extends JPanel {
 
   private val emptyColor = new Color(208, 208, 208)
@@ -47,6 +51,10 @@ class GamePanel(private var window: GUI, b: Board) extends JPanel {
       stopRow += 1
     }
 
+    /**
+     * Start the animation at column col
+     * and release the blocked thread that called this method.
+     */
     val taskPerformer = new ActionListener() {
       def actionPerformed(evt: ActionEvent) {
         if (animation) {
@@ -67,12 +75,22 @@ class GamePanel(private var window: GUI, b: Board) extends JPanel {
     timer.start()
   }
 
+  /**
+   * Save a copy of board b.
+   * A copy is needed so that when the board from class Game is updated,
+   * it does not show up on the Game panel just yet. There needs to be some
+   * time for the Game Panel to show the animation.
+   */
   def updateBoard(b: Board) {
     board = Board(b)
   }
 
   override def getPreferredSize(): Dimension = new Dimension(wid, hght)
 
+  /**
+   * Paint the entire game panel, painting whatever is represented in this
+   * object's version of the board and as well as the animation's falling tiles.
+   */
   override def paintComponent(g: Graphics) {
     super.paintComponent(g)
     val g2d = g.asInstanceOf[Graphics2D]

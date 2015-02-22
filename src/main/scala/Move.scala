@@ -1,4 +1,11 @@
+/**
+ * An instance represents a player and a column number, so that when this move
+ * is applied to a Board object, this Move's player will place a piece in
+ * this Move's column in the Board.
+ */
+
 class Move(var player: Player, var column: Int) {
+
 
   if (player == null) {
     throw new IllegalArgumentException("Cannot create a Move with a null player")

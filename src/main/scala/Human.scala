@@ -1,5 +1,8 @@
 import java.util.concurrent.Semaphore
 
+/**
+ * A Solver that takes human input from a GUI to determine moves.
+ */
 class Human(private var player: Player) extends Solver {
 
   private var waitSema: Semaphore = new Semaphore(0)
@@ -15,6 +18,10 @@ class Human(private var player: Player) extends Solver {
     Array(new Move(player, nextColumn))
   }
 
+  /**
+   * Signal to this Human that the user wants to place
+   * a piece in column c.
+   */
   def columnClicked(c: Int) {
     nextColumn = c
     waitSema.release()
