@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -51,7 +52,22 @@ class Board {
    * player into move's column on this Board.
    * Throw an IllegalArgumentException if move's column is full on this Board.
    */
-  def makeMove(move: Move): Unit = {}
+  def makeMove(move: Move): Unit = {
+  }
+
+
+  def test(input: Int) = getTop(input)
+
+
+  /**
+   *
+   * @param column
+   * @return top disc in the column
+   */
+  @tailrec
+  private def getTop(column: Int, row: Int = 0): Int = {
+    if (row > Board.NUM_ROWS || board(row)(column) == null) row else getTop(column, row + 1)
+  }
 
   /**
    * Return the Player at board position (row, col). Rows are
