@@ -26,5 +26,6 @@ case class TreeNode(private var left: TreeNode, v: Int, private var right: TreeN
    */
 
   def isBST(): Boolean = false
+  //TODO: implement the function isBST
 }
 
