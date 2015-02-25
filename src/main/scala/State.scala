@@ -39,7 +39,8 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    * initializes only this State's children; it does not recursively
    * initialize all descendants.
    */
-  def initializeChildren() {
+  def initializeChildren(): Unit = {
+    // TODO
   }
 
   /**

@@ -10,6 +10,7 @@
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
   override def getMoves(b: Board): Array[Move] = ???
+  // TODO
 
   /**
    * State s is a node of a game tree (i.e. the current State of the game).
