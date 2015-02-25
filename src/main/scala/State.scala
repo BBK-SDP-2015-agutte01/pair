@@ -45,7 +45,9 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
     if (player == YELLOW) opposition = RED
     else opposition = YELLOW
 
-    val moveArr = board.getPossibleMoves(opposition)
+    val cloneBoard = board.clone().asInstanceOf[Board]
+    cloneBoard.makeMove(lastMove)
+    val moveArr = cloneBoard.getPossibleMoves(opposition)
 
     for(m <- moveArr) {
       // TODO is this the best way of appending to an array?
