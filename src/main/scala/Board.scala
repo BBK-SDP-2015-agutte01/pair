@@ -1,5 +1,5 @@
 import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 /**
  * An instance represents a grid of pieces from two opposing
@@ -55,7 +55,10 @@ class Board {
    * @param move
    */
   def makeMove(move: Move): Unit = {
-    board(getTop(move.column))(move.column) = move.player
+    if (getTop(move.column) != -1)
+      board(getTop(move.column))(move.column) = move.player
+    else
+      throw new IllegalArgumentException
   }
 
   /**
@@ -66,9 +69,9 @@ class Board {
    */
   @tailrec
   private def getTop(column: Int, row: Int = Board.NUM_ROWS - 1): Int = {
-    if (row < 0)
-      throw new IllegalArgumentException
-    if (board(row)(column) == null) row else getTop(column, row - 1)
+    if (row < 0)  -1
+    else if (board(row)(column) == null) row
+    else getTop(column, row - 1)
   }
 
   /**
@@ -88,8 +91,17 @@ class Board {
    * of columns that are not full. Thus, if all columns are full, return an
    * array of length 0.
    */
-  def getPossibleMoves(p: Player): Array[Move] = ???
-  // TODO
+  def getPossibleMoves(p: Player): Array[Move] = {
+    val output = new ArrayBuffer[Move]
+    if (hasConnectFour() == null) {
+          for (i <- 0 until Board.NUM_COLS) {
+            val top = getTop(i)
+            if (top != -1)
+              output += new Move(p, i)
+      }
+    }
+    output.toArray
+  }
 
   /**
    * Return a representation of this board
