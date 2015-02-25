@@ -51,22 +51,24 @@ class Board {
    * Apply Move move to this Board by placing a piece from move's
    * player into move's column on this Board.
    * Throw an IllegalArgumentException if move's column is full on this Board.
+   *
+   * @param move
    */
   def makeMove(move: Move): Unit = {
+    board(getTop(move.column))(move.column) = move.player
   }
-
-
-  def test(input: Int) = getTop(input)
-
 
   /**
    *
    * @param column
-   * @return top disc in the column
+   * @param row
+   * @return
    */
   @tailrec
-  private def getTop(column: Int, row: Int = 0): Int = {
-    if (row > Board.NUM_ROWS || board(row)(column) == null) row else getTop(column, row + 1)
+  private def getTop(column: Int, row: Int = Board.NUM_ROWS - 1): Int = {
+    if (row < 0)
+      throw new IllegalArgumentException
+    if (board(row)(column) == null) row else getTop(column, row - 1)
   }
 
   /**
@@ -87,11 +89,12 @@ class Board {
    * array of length 0.
    */
   def getPossibleMoves(p: Player): Array[Move] = ???
+  // TODO
 
   /**
    * Return a representation of this board
    */
-  override def toString(): String = ???
+  override def toString(): String = toString("")
 
   /**
    * Return the String representation of this Board with prefix
