@@ -40,7 +40,17 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    * initialize all descendants.
    */
   def initializeChildren(): Unit = {
-    // TODO
+    var opposition: Player = null
+
+    if (player == YELLOW) opposition = RED
+    else opposition = YELLOW
+
+    val moveArr = board.getPossibleMoves(opposition)
+
+    for(m <- moveArr) {
+      // TODO is this the best way of appending to an array?
+      children :+ new State(opposition, board, m)
+    }
   }
 
   /**
