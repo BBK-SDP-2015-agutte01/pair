@@ -4,3 +4,5 @@
 project
 target
 scalastyle-config.xml
+
+output.txt

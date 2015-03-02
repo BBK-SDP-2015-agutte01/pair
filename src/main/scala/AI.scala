@@ -69,12 +69,12 @@ object AI {
     s.initializeChildren()
     val children = s.getChildren
 
-
     if (d > 0) {
       for (c <- children) {
         createGameTree(c, d - 1)
       }
     }
+    s.writeToFile()
   }
 
   /**
