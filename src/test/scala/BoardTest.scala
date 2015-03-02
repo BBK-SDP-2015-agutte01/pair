@@ -32,7 +32,10 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
   "A Board" should "return an array of Moves of length 6 when getPossibleMoves is called " +
     "and one column is full" in {
 
-    for (i <- 0 until 5) board.makeMove(new Move(YELLOW, 0))
+    for (i <- 0 until 3) {
+      board.makeMove(new Move(YELLOW, 0))
+      board.makeMove(new Move(RED, 0))
+    }
     board.getPossibleMoves(YELLOW).length should be (6)
 
   }
@@ -41,7 +44,10 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     "and all spaces are full" in {
 
     for (c <- 0 until 5) {
-      for (i <- 0 until 5) board.makeMove(new Move(YELLOW, c))
+      for (i <- 0 until 3) {
+        board.makeMove(new Move(YELLOW, c))
+        board.makeMove(new Move(RED, c))
+      }
     }
 
     board.getPossibleMoves(YELLOW).length should be (0)
