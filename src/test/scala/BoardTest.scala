@@ -3,8 +3,8 @@ import org.scalatest.{BeforeAndAfterEach, Matchers, FlatSpec}
 class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
 
   var board = Board()
-//  val p1 = new Human(YELLOW)
-//  val p2 = new Human(RED)
+  //  val p1 = new Human(YELLOW)
+  //  val p2 = new Human(RED)
 
   override def beforeEach(): Unit = {
     board = Board()
@@ -25,10 +25,7 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
   "A Board" should "return an array of Moves of length 7 when getPossibleMoves is called " +
     "on an empty board" in {
 
-    println(board.getPossibleMoves(YELLOW).length)
-    var arr = Array[Move]()
-    for (i <- 0 until 5) arr = arr :+ new Move(YELLOW, i)
-    board.getPossibleMoves(YELLOW) should be (arr)
+    board.getPossibleMoves(YELLOW).length should be (7)
 
   }
 
@@ -47,8 +44,7 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
       for (i <- 0 until 5) board.makeMove(new Move(YELLOW, c))
     }
 
-    val arr = Array[Move]()
-    board.getPossibleMoves(YELLOW) should be (arr)
+    board.getPossibleMoves(YELLOW).length should be (0)
 
   }
 
