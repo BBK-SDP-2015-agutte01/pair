@@ -5,7 +5,7 @@
  * indicates an empty tile.
  */
 
-trait Player {
+sealed trait Player {
   def opponent: Player
 }
 
