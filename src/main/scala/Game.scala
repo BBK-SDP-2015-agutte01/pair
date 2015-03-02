@@ -112,12 +112,34 @@ class Game(private var activePlayer: Solver, private var player2: Solver) {
 object Game extends App {
 
   val p1 = Dummy(RED)
-  val p2 = Dummy(YELLOW)
-  val game = Game(p1, p2)
 
+//  val p2 = Dummy(YELLOW)
+  val p2 = new AI(YELLOW, 5)
+
+  val game = Game(p1, p2)
   //Change this if you would like a delay between plays
   private val SLEEP_INTERVAL = 10
-  game.runGame()
+
+//  game.runGame()
+  val board = Board()
+
+  val redMove1 = new Move(RED, 0)
+  val redMove2 = new Move(RED, 5)
+  val redMove3 = new Move(RED, 6)
+  val yellowMove1 = new Move(YELLOW, 1)
+  val yellowMove2 = new Move(YELLOW, 2)
+  val yellowMove3 = new Move(YELLOW, 3)
+
+  board.makeMove(redMove1)
+  board.makeMove(yellowMove1)
+  board.makeMove(redMove2)
+  board.makeMove(yellowMove2)
+  board.makeMove(redMove3)
+  board.makeMove(yellowMove3)
+
+  val thisState = new State(YELLOW, board, yellowMove3)
+
+  AI.createGameTree(thisState, 2)
 
   def apply(p1: Solver, p2: Solver) =
     new Game(p1, p2)

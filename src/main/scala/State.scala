@@ -45,15 +45,18 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
     if (player == YELLOW) opposition = RED
     else opposition = YELLOW
 
-    val cloneBoard = board.clone().asInstanceOf[Board]
-    cloneBoard.makeMove(lastMove)
+    val cloneBoard = new Board(board, lastMove)
     val moveArr = cloneBoard.getPossibleMoves(opposition)
+    print(moveArr.length)
 
     for(m <- moveArr) {
+      print("here")
+
       // TODO is this the best way of appending to an array?
-      children :+ new State(opposition, board, m)
+     children = children :+ new State(opposition, board, m)
     }
   }
+
 
   /**
    * Write this State to a file called "output.txt", including its
@@ -62,6 +65,7 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    * Beep when printing is done.
    */
   def writeToFile() {
+    println("write to file")
     var writer: PrintWriter = null
     try {
       writer = new PrintWriter("output.txt", "UTF-8")

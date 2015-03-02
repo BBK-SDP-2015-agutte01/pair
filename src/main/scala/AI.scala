@@ -65,12 +65,16 @@ object AI {
   def createGameTree(s: State, d: Int) {
     // Note: This method must be recursive, recurse on d,
     // which should get smaller with each recursive call
-
     // TODO
     s.initializeChildren()
     val children = s.getChildren
-    if (d > 0) 
-      for(c <- children) createGameTree(c, d-1)
+
+
+    if (d > 0) {
+      for (c <- children) {
+        createGameTree(c, d - 1)
+      }
+    }
   }
 
   /**

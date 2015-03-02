@@ -25,8 +25,9 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
   "A Board" should "return an array of Moves of length 7 when getPossibleMoves is called " +
     "on an empty board" in {
 
-    val arr = Array[Move]()
-    for (i <- 0 until 5) arr :+ new Move(YELLOW, i)
+    println(board.getPossibleMoves(YELLOW).length)
+    var arr = Array[Move]()
+    for (i <- 0 until 5) arr = arr :+ new Move(YELLOW, i)
     board.getPossibleMoves(YELLOW) should be (arr)
 
   }
@@ -35,11 +36,8 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     "and one column is full" in {
 
     for (i <- 0 until 5) board.makeMove(new Move(YELLOW, 0))
+    board.getPossibleMoves(YELLOW).length should be (6)
 
-    val arr = Array[Move]()
-    for (i <- 1 until 5) arr :+ new Move(YELLOW, i)
-
-    board.getPossibleMoves(YELLOW) should be (arr)
   }
 
   "A Board" should "return an array of Moves of length 0 when getPossibleMoves is called " +
@@ -53,6 +51,8 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     board.getPossibleMoves(YELLOW) should be (arr)
 
   }
+
+
 
 
 }

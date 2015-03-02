@@ -59,6 +59,7 @@ class Board {
       board(getTop(move.column))(move.column) = move.player
     else
       throw new IllegalArgumentException
+
   }
 
   /**
