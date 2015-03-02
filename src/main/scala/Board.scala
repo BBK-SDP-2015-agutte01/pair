@@ -96,7 +96,6 @@ class Board {
     val output = new ArrayBuffer[Move]
     if (hasConnectFour() == None) {
           for (i <- 0 until Board.NUM_COLS) {
-            println("possible move in column " + i)
             val top = getTop(i)
             if (top != -1)
               output += new Move(p, i)
