@@ -66,14 +66,19 @@ object AI {
     // Note: This method must be recursive, recurse on d,
     // which should get smaller with each recursive call
     // TODO
-    s.initializeChildren()
-    val children = s.getChildren
 
     if (d > 0) {
+      s.initializeChildren()
+      val children = s.getChildren
+
+
       for (c <- children) {
         createGameTree(c, d - 1)
       }
     }
+    
+    val ai = new AI(s.player, d)
+    s.value = ai.evaluateBoard(s.board)
     s.writeToFile()
   }
 
@@ -81,7 +86,6 @@ object AI {
    * Call minimax in ai with state s.
    */
   def minimax(ai: AI, s: State) {
-    ai.minimax(s)
   }
 }
 

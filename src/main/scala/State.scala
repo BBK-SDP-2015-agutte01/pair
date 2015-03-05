@@ -48,8 +48,8 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
     val cloneBoard = new Board(board, lastMove)
     val moveArr = cloneBoard.getPossibleMoves(opposition)
     for(m <- moveArr) {
-      // TODO is this the best way of appending to an array?
-     children = children :+ new State(opposition, board, m)
+      val childBoard = new Board(cloneBoard,m)
+      children = children :+ new State(opposition, childBoard, m)
     }
   }
 
