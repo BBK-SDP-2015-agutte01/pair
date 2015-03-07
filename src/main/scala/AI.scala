@@ -1,3 +1,5 @@
+import scala.collection.mutable.ArrayBuffer
+
 /**
  * An instance represents a Solver that intelligently determines
  * Moves using the Minimax algorithm.
@@ -16,7 +18,35 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
    * Use the Minimax algorithm to assign a numerical value to each State of the
    * tree rooted at s, indicating how desirable that State is to this player.
    */
-  def minimax(s: State) {
+  def minimax(s: State): Unit = {
+
+    if (s.children.length > 0) {
+
+      for (c1 <- s.children) {
+
+        if (c1.children.length == 0) {
+          //May want to check for each is correct
+          s.children.foreach(x => evaluateBoard(x.board))
+
+        } else {
+          minimax(c1)
+          val values = Array[Int](s.children.length)
+          for (i <- 0 until s.children.length) {
+            values(i) = s.children(i).value
+          }
+
+          if (s.player == this.player){
+            s.value = values.max
+          } else {
+            s.value = values.min
+          }
+
+        }
+
+      }
+
+    }
+
   }
 
   /**
@@ -78,14 +108,15 @@ object AI {
     }
     
     val ai = new AI(s.player, d)
-    s.value = ai.evaluateBoard(s.board)
+
     s.writeToFile()
   }
 
   /**
    * Call minimax in ai with state s.
    */
-  def minimax(ai: AI, s: State) {
+  def minimax(ai: AI, s: State): Unit = {
+    ai.minimax(s)
   }
 }
 
