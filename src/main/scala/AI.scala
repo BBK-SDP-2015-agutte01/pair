@@ -11,7 +11,27 @@ import scala.collection.mutable.ArrayBuffer
  */
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
-  override def getMoves(b: Board): Array[Move] = ???
+  override def getMoves(b: Board): Array[Move] = {
+    val s = new State(player, b, null)
+    AI.createGameTree(s, depth)
+
+    minimax(s)
+
+    decideMove(s.getChildren)
+  }
+
+  private def decideMove(children: Array[State]): Array[Move] = {
+    val result = new Array[Move](1)
+
+    var bestState: State = children(0)
+
+    for (i <- 1 until children.length) {
+      if (bestState.value < children(i).value) bestState = children(i)
+    }
+
+    result(0) = bestState.lastMove
+    result
+  }
 
   /**
    * State s is a node of a game tree (i.e. the current State of the game).
