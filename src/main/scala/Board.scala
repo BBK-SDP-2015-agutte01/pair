@@ -62,8 +62,8 @@ class Board {
 
   }
 
+  // TODO comments!
   /**
-   *
    * @param column
    * @param row
    * @return
@@ -176,6 +176,46 @@ class Board {
     }
     location
   }
+
+  /**
+   * Fills column c with discs.
+   *
+   * The top Player of column c is fetched, and the column is filled with alternating
+   * discs starting with the opposite Player first to prevent four-in-a-row. If the
+   * column is empty then the default first disc is of a YELLOW Player.
+   *
+   * Created for testing purposes.
+   *
+   * @param c zero-indexed column number to be filled
+   */
+  def fillColumn(c: Int) = {
+
+    var top = getTop(c)
+    var p1: Player = YELLOW
+    var p2: Player = RED
+
+    if (getPlayer(top - 1, c) == RED) {
+      p1 = RED
+      p2 = YELLOW
+    }
+
+    while (top != -1) {
+
+      for (i <- 0 to Board.NUM_ROWS - 1) {
+
+        if (i % 2 == 0) {
+          makeMove(new Move(p1, c))
+        }
+        else {
+          makeMove(new Move(p2, c))
+        }
+
+        top = getTop(c)
+
+      }
+    }
+  }
+
 }
 
 object Board {
