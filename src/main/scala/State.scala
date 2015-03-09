@@ -1,4 +1,5 @@
 import java.io.{FileNotFoundException, PrintWriter, UnsupportedEncodingException}
+import java.lang.IllegalArgumentException
 
 import State.length0
 
@@ -45,12 +46,25 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
     if (player == YELLOW) opposition = RED
     else opposition = YELLOW
 
-    val cloneBoard = new Board(board, lastMove)
-    val moveArr = cloneBoard.getPossibleMoves(opposition)
-    for(m <- moveArr) {
-      val childBoard = new Board(cloneBoard,m)
-      children = children :+ new State(opposition, childBoard, m)
+    var cloneBoard = new Board(board)
+    // TODO add try/catch for makeMove throwing IllegalArgumentException from Board.<init>
+
+    try {
+
+      if (lastMove !=  null) cloneBoard = new Board(board, lastMove)
+      val moveArr = cloneBoard.getPossibleMoves(opposition)
+
+      for(m <- moveArr) {
+
+        val childBoard = new Board(cloneBoard,m)
+        children = children :+ new State(opposition, childBoard, m)
+
+      }
+
+    } catch {
+      case e: IllegalArgumentException => System.err.println("Move not possible")
     }
+
   }
 
 
