@@ -134,7 +134,7 @@ object AI {
   /**
    * Call minimax in ai with state s.
    */
-  def minimax(ai: AI, s: State) {
+  def minimax(ai: AI, s: State): Unit = {
     ai.minimax(s)
   }
 }
