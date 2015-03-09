@@ -129,13 +129,12 @@ object AI {
     
     val ai = new AI(s.player, d)
 
-    s.writeToFile()
   }
 
   /**
    * Call minimax in ai with state s.
    */
-  def minimax(ai: AI, s: State): Unit = {
+  def minimax(ai: AI, s: State) {
     ai.minimax(s)
   }
 }
