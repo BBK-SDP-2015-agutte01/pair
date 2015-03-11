@@ -112,14 +112,12 @@ class AITest extends FlatSpec with MockFactory with Matchers {
 
   it should "generate the expected state nodes at each level" in {
 
-   AI.createGameTree(testRoot, 1)
+    AI.createGameTree(testRoot, 1)
     oneLevelChild0.toString() should be(testRoot.children(0).toString())
     AI.createGameTree(testRoot, 2)
-
-        twoLevelsChild3Child3.toString() should be(testRoot.children(3).children(3).toString())
+    twoLevelsChild3Child3.toString() should be(testRoot.children(3).children(3).toString())
     AI.createGameTree(testRoot, 3)
-
-        threeLevel3Child6Child3Child5.toString() should be(testRoot.children(6).children(3).children(5).toString())
+    threeLevel3Child6Child3Child5.toString() should be(testRoot.children(6).children(3).children(5).toString())
   }
 
   "A minimax method" should "assign the correct values to each state from the leaves upwards." in {
@@ -138,5 +136,28 @@ class AITest extends FlatSpec with MockFactory with Matchers {
 //    testRoot.children(0).children(0).value should be (max)
 
   }
+
+  "A getMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
+    val aiObject = new AI(testRoot.player, 3)
+
+    board3.makeMove(redMove1)
+    board3.makeMove(redMove1)
+
+    aiObject.getMoves(board3)(0).column should equal (redMove1.column)
+  }
+
+//  inAnyOrder {
+//    val aiMock = mock[AI]
+//    val boardStub = stub[Board()]
+//
+//    (aiMock.getMoves(boardStub) _).expects(AI.createGameTree(), *, *)
+//    (httpClient.sendRequest _).expects(Method.POST, "http://scalamock.org", *).noMoreThanOnce
+//    (httpClient.sendRequest _).expects(Method.POST, "http://example.com", *).returning(Http.NotFound)
+//    inSequence {
+//      (counterMock.increment _) expects(*) onCall { arg: Int => arg + 1}
+//      (counterMock.decrement _) expects(*) onCall { throw new RuntimeException() }
+//    }
+//  }
+
 
 }
