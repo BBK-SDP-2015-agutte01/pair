@@ -1,4 +1,4 @@
-
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * An instance represents a Solver that intelligently determines
@@ -17,20 +17,30 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
 
     minimax(s)
 
-    decideMove(s.getChildren)
+    decideMove(s)
   }
 
-  private def decideMove(children: Array[State]): Array[Move] = {
-    val result = new Array[Move](1)
+  // for testing
+  def getBestMoves(b: Board): Array[Move] = {
+    val s = new State(player, b, null)
+    AI.createGameTree(s, depth)
+    minimax(s)
 
-    var bestState: State = children(0)
-
-    for (i <- 1 until children.length) {
-      if (bestState.value < children(i).value) bestState = children(i)
+    var ab = new ArrayBuffer[Move]()
+    for (c <- s.children) {
+      if (s.value == c.value)
+        ab += c.children(0).lastMove
     }
+    ab.toArray
+  }
 
-    result(0) = bestState.lastMove
-    result
+  private def decideMove(s: State): Array[Move] = {
+    // decide probability for each column, then use Math.Random to choose column
+    var ab = new ArrayBuffer[Move]()
+    for (c <- s.children) {
+      if (s.value == c.value) ab += c.children(0).lastMove
+    }
+    ab.toArray
   }
 
   /**
@@ -41,28 +51,17 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
   def minimax(s: State): Unit = {
 
     if (s.children.length > 0) {
-
       for (c <- s.children) {
-        if (c.children.length > 0) {
-          minimax(c)
-
-        }
-        else {
-          for (i <- 0 until s.children.length) {
-            val value = evaluateBoard(s.children(i).board)
-            s.children(i).value = value
-          }
-
-        }
-
+        if (c.children.length > 0) minimax(c)
+        else c.value = evaluateBoard(c.board)
       }
+
       // Assigns values to parent nodes based on the value of their children nodes
       val values = new Array[Int](s.children.length)
       for (i <- 0 until s.children.length) {
         values(i) = s.children(i).value
       }
-      s.value = if (s.player == this.player) values.max else values.min
-
+      s.value = if (s.player == this.player) values.min else values.max
     }
   }
 
@@ -110,23 +109,17 @@ object AI {
    * <p/>
    * Note: If s has a winner (four in a row), it should be a leaf.
    */
-  def createGameTree(s: State, d: Int) {
+  def createGameTree(s: State, d: Int): Unit = {
     // Note: This method must be recursive, recurse on d,
     // which should get smaller with each recursive call
-    // TODO
 
-    if (d > 0) {
+    if (d == 1) s.initializeChildren()
+    else if (d > 1) {
       s.initializeChildren()
-      val children = s.getChildren
-
-
-      for (c <- children) {
+      for (c <- s.children) {
         createGameTree(c, d - 1)
       }
     }
-
-    val ai = new AI(s.player, d)
-
   }
 
   /**
