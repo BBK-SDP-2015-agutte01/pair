@@ -12,7 +12,7 @@ class StateTest extends FlatSpec with Matchers with BeforeAndAfterEach {
   "A State" should "assign an array of 7 States to var children when initializeChildren is called." in {
     val s = new State(YELLOW, board, m)
     s.initializeChildren()
-    s.getChildren.length should be (7)
+    s.getChildren.length should have length 7
   }
 
   it should "assign an array of 6 States to var children when initializeChildren is called and " +
@@ -20,7 +20,7 @@ class StateTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     board.fillColumn(0)
     val s = new State(YELLOW, board, m)
     s.initializeChildren()
-    s.getChildren.length should be (6)
+    s.getChildren.length should have length 6
   }
 
   it should "not be able to add States to var children when initializeChildren is called and " +
@@ -30,7 +30,7 @@ class StateTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     }
     val s = new State(YELLOW, board, m)
     s.initializeChildren()
-    s.getChildren.length should be (0)
+    s.getChildren.length should have length 0
   }
 
 }
