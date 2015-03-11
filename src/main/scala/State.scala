@@ -41,27 +41,14 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    */
   def initializeChildren(): Unit = {
     val opposition: Player = if (player == YELLOW) RED else YELLOW
+    val cloneBoard = new Board(board)
+    val moveArr = cloneBoard.getPossibleMoves(opposition)
+    children = length0
 
-
-    // TODO add try/catch for makeMove throwing IllegalArgumentException from Board.<init>
-
-    try {
-      val cloneBoard = new Board(board)
-
-
-      val moveArr = cloneBoard.getPossibleMoves(opposition)
-
-      for(m <- moveArr) {
-
-        val childBoard = new Board(cloneBoard,m)
-        children = children :+ new State(opposition, childBoard, m)
-
-      }
-
-    } catch {
-      case e: IllegalArgumentException => System.err.println("Move not possible")
+    for (m <- moveArr) {
+      val childBoard = new Board(cloneBoard, m)
+      children = children :+ new State(opposition, childBoard, m)
     }
-
   }
 
 
