@@ -8,10 +8,17 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     board = Board()
   }
 
-  "A Board " should "place a Player disc when makeMove(column) is called." in {
+  "A makeMove method " should "place a Player disc when called." in {
     val move = new Move(YELLOW, 1)
     board.makeMove(move)
     board.getTile(5, 1) should be (YELLOW)
+  }
+
+  it should "throw an IllegalArgumentException if the column of the Move is full." in {
+    board.fillColumn(0)
+    intercept[IllegalArgumentException] {
+      board.makeMove(new Move(YELLOW, 0))
+    }
   }
 
   "A getPossibleMoves method " should "return an array of Moves of length 7 when" +
@@ -29,10 +36,4 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
     board.getPossibleMoves(YELLOW).length should be (0)
   }
 
-  "A makeMove method " should "throw an IllegalArgumentException if the column of the Move is full." in {
-    board.fillColumn(0)
-    intercept[IllegalArgumentException] {
-      board.makeMove(new Move(YELLOW, 0))
-    }
-  }
 }
