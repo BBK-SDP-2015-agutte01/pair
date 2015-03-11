@@ -164,15 +164,27 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     }
     testRoot.children(0).children(0).value should be (min)
 
+    // now testing if value of parent of leaves is equal to max of leaf values
+    val nodes = testRoot.children(0).children
+
+    max = nodes(0).value
+    min = nodes(0).value
+
+    for (n <- nodes) {
+      if (n.value > max) max = n.value
+      if (n.value < min) min = n.value
+    }
+
+    testRoot.children(0).value should be (max)
   }
 
-  "A getMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
-    val aiObject = new AI(testRoot.player, 3)
+  "A getBestMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
+    val aiObject = new AI(testRoot.player, 2)
 
     board3.makeMove(redMove1)
     board3.makeMove(redMove1)
 
-    aiObject.getMoves(board3)(0).column should equal (redMove1.column)
+    aiObject.getBestMoves(board3)(0).column should equal (redMove1.column)
   }
 
 //  inAnyOrder {
