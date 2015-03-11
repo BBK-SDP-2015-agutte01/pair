@@ -30,7 +30,7 @@ class AITest extends FlatSpec with MockFactory with Matchers {
   val board2 = Board(board)
   val board3 = Board(board)
   val testBoard = Board(board)
-  val testRoot = new State(RED, testBoard, yellowMove3)
+  val testRoot = new State(YELLOW, testBoard, yellowMove3)
 
 
 
@@ -112,10 +112,31 @@ class AITest extends FlatSpec with MockFactory with Matchers {
 
   it should "generate the expected state nodes at each level" in {
 
+   AI.createGameTree(testRoot, 1)
+    oneLevelChild0.toString() should be(testRoot.children(0).toString())
+    AI.createGameTree(testRoot, 2)
+
+        twoLevelsChild3Child3.toString() should be(testRoot.children(3).children(3).toString())
     AI.createGameTree(testRoot, 3)
-    oneLevelChild0 should be(testRoot.children(0))
-//    twoLevelsChild3Child3 should be(testRoot.children(3).children(3))
-//    threeLevel3Child6Child3Child5 should be(testRoot.children(6).children(3).children(5))
+
+        threeLevel3Child6Child3Child5.toString() should be(testRoot.children(6).children(3).children(5).toString())
+  }
+
+  "A minimax method" should "assign the correct values to each state from the leaves upwards." in {
+    AI.createGameTree(testRoot, 3)
+    val aiObject = new AI(testRoot.player, 3)
+    aiObject.minimax(testRoot)
+    val leaves = testRoot.children(0).children(0).children
+    var max = leaves(0).value
+    var min = leaves(0).value
+    for (c <- leaves) {
+      c.value should be (aiObject.evaluateBoard(c.board))
+      if (c.value > max) max = c.value
+      if (c.value < min) min = c.value
+    }
+//    println(testRoot)
+//    testRoot.children(0).children(0).value should be (max)
+
   }
 
 }
