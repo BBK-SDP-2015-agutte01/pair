@@ -94,12 +94,9 @@ class Board {
    */
   def getPossibleMoves(p: Player): Array[Move] = {
     val output = new ArrayBuffer[Move]
-    if (hasConnectFour() == None) {
-          for (i <- 0 until Board.NUM_COLS) {
-            val top = getTop(i)
-            if (top != -1)
-              output += new Move(p, i)
-      }
+    for (i <- 0 until Board.NUM_COLS) {
+      val top = getTop(i)
+      if (top != -1) output += new Move(p, i)
     }
     output.toArray
   }
