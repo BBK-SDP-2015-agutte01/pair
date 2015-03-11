@@ -120,20 +120,49 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     threeLevel3Child6Child3Child5.toString() should be(testRoot.children(6).children(3).children(5).toString())
   }
 
-  "A minimax method" should "assign the correct values to each state from the leaves upwards." in {
+  "A minimax method" should "assign the correct values to each of the leaves." in {
+    AI.createGameTree(testRoot, 3)
+    val aiObject = new AI(testRoot.player, 3)
+    aiObject.minimax(testRoot)
+    var leaves = testRoot.children(0).children(0).children
+
+    leaves(0).value should be (aiObject.evaluateBoard(leaves(0).board))
+    leaves(1).value should be (aiObject.evaluateBoard(leaves(1).board))
+    leaves(2).value should be (aiObject.evaluateBoard(leaves(2).board))
+    leaves(3).value should be (aiObject.evaluateBoard(leaves(3).board))
+    leaves(4).value should be (aiObject.evaluateBoard(leaves(4).board))
+    leaves(5).value should be (aiObject.evaluateBoard(leaves(5).board))
+    leaves(6).value should be (aiObject.evaluateBoard(leaves(6).board))
+
+    leaves = testRoot.children(4).children(3).children
+
+    leaves(0).value should be (aiObject.evaluateBoard(leaves(0).board))
+    leaves(1).value should be (aiObject.evaluateBoard(leaves(1).board))
+    leaves(2).value should be (aiObject.evaluateBoard(leaves(2).board))
+    leaves(3).value should be (aiObject.evaluateBoard(leaves(3).board))
+    leaves(4).value should be (aiObject.evaluateBoard(leaves(4).board))
+    leaves(5).value should be (aiObject.evaluateBoard(leaves(5).board))
+    leaves(6).value should be (aiObject.evaluateBoard(leaves(6).board))
+
+
+
+  }
+
+  it should "then assign the correct values to each of the parent nodes based on the values of their children." in {
     AI.createGameTree(testRoot, 3)
     val aiObject = new AI(testRoot.player, 3)
     aiObject.minimax(testRoot)
     val leaves = testRoot.children(0).children(0).children
+
+    //Code below tests if the parents are being assigned the correct (either highest/lowest values) based on the values of their children
     var max = leaves(0).value
     var min = leaves(0).value
+
     for (c <- leaves) {
-      c.value should be (aiObject.evaluateBoard(c.board))
       if (c.value > max) max = c.value
       if (c.value < min) min = c.value
     }
-//    println(testRoot)
-//    testRoot.children(0).children(0).value should be (max)
+    testRoot.children(0).children(0).value should be (min)
 
   }
 

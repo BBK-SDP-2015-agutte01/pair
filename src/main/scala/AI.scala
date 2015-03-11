@@ -42,27 +42,30 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
 
     if (s.children.length > 0) {
 
-      if (s.children(0).children.length > 0) {
-        treeLevelCount += 1
-        minimax(s.children(0))
+      for (c <- s.children) {
+        if (c.children.length > 0) {
+          minimax(c)
 
         }
-      else {
-//        println("about to assign")
-        for (i <- 0 until s.children.length) {
-          val value = evaluateBoard(s.children(i).board)
-          println("assigning " + value + " to child " + i + " at level " + treeLevelCount)
+        else {
+          for (i <- 0 until s.children.length) {
+            val value = evaluateBoard(s.children(i).board)
+            s.children(i).value = value
+          }
 
-          s.children(i).value = value
-          println("value now: " + s.children(i).value)
         }
+
       }
+      // Assigns values to parent nodes based on the value of their children nodes
+      val values = new Array[Int](s.children.length)
+      for (i <- 0 until s.children.length) {
+        values(i) = s.children(i).value
+      }
+      s.value = if (s.player == this.player) values.max else values.min
 
     }
-
   }
 
-  var treeLevelCount = 0
 
   /**
    * Evaluate the desirability of Board b for this player
@@ -121,7 +124,7 @@ object AI {
         createGameTree(c, d - 1)
       }
     }
-    
+
     val ai = new AI(s.player, d)
 
   }
