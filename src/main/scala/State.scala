@@ -1,5 +1,4 @@
 import java.io.{FileNotFoundException, PrintWriter, UnsupportedEncodingException}
-import java.lang.IllegalArgumentException
 
 import State.length0
 
@@ -41,17 +40,15 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    * initialize all descendants.
    */
   def initializeChildren(): Unit = {
-    var opposition: Player = null
+    val opposition: Player = if (player == YELLOW) RED else YELLOW
 
-    if (player == YELLOW) opposition = RED
-    else opposition = YELLOW
 
-    var cloneBoard = new Board(board)
     // TODO add try/catch for makeMove throwing IllegalArgumentException from Board.<init>
 
     try {
+      val cloneBoard = new Board(board)
 
-      if (lastMove !=  null) cloneBoard = new Board(board, lastMove)
+
       val moveArr = cloneBoard.getPossibleMoves(opposition)
 
       for(m <- moveArr) {
