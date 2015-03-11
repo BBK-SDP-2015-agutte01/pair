@@ -23,17 +23,17 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
 
   "A getPossibleMoves method " should "return an array of Moves of length 7 when" +
     "the board is empty" in {
-    board.getPossibleMoves(YELLOW).length should be (7)
+    board.getPossibleMoves(YELLOW) should have length 7
   }
 
   it should "return an array of Moves of length 6 when the board has one full column" in {
     board.fillColumn(0)
-    board.getPossibleMoves(YELLOW).length should be (6)
+    board.getPossibleMoves(YELLOW) should have length 6
   }
 
   it should "return an array of Moves of length 0 when the board is full." in {
     for (c <- 0 until 6) board.fillColumn(c)
-    board.getPossibleMoves(YELLOW).length should be (0)
+    board.getPossibleMoves(YELLOW) should have length 0
   }
 
 }
