@@ -1,4 +1,4 @@
-import scala.collection.mutable.ArrayBuffer
+
 
 /**
  * An instance represents a Solver that intelligently determines
@@ -42,32 +42,27 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
 
     if (s.children.length > 0) {
 
-      for (c1 <- s.children) {
-
-        if (c1.children.length == 0) {
-          //May want to check for each is correct
-          s.children.foreach(x => evaluateBoard(x.board))
-
-        } else {
-          minimax(c1)
-          val values = Array[Int](s.children.length)
-          for (i <- 0 until s.children.length) {
-            values(i) = s.children(i).value
-          }
-
-          if (s.player == this.player){
-            s.value = values.max
-          } else {
-            s.value = values.min
-          }
+      if (s.children(0).children.length > 0) {
+        treeLevelCount += 1
+        minimax(s.children(0))
 
         }
+      else {
+//        println("about to assign")
+        for (i <- 0 until s.children.length) {
+          val value = evaluateBoard(s.children(i).board)
+          println("assigning " + value + " to child " + i + " at level " + treeLevelCount)
 
+          s.children(i).value = value
+          println("value now: " + s.children(i).value)
+        }
       }
 
     }
 
   }
+
+  var treeLevelCount = 0
 
   /**
    * Evaluate the desirability of Board b for this player
