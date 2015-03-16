@@ -12,8 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
   override def getMoves(b: Board): Array[Move] = {
-    val opponent = if (player == YELLOW) RED else YELLOW
-    val s = new State(opponent, b, null)
+    val s = new State(player, b, null)
     AI.createGameTree(s, depth)
 
     minimax(s)
