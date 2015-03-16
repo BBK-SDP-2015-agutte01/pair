@@ -12,7 +12,8 @@ import scala.collection.mutable.ArrayBuffer
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
   override def getMoves(b: Board): Array[Move] = {
-    val s = new State(player, b, null)
+    val opponent = if (player == YELLOW) RED else YELLOW
+    val s = new State(opponent, b, null)
     AI.createGameTree(s, depth)
 
     minimax(s)
@@ -34,11 +35,11 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     ab.toArray
   }
 
-  private def decideMove(s: State): Array[Move] = {
+   private def decideMove(s: State): Array[Move] = {
     // decide probability for each column, then use Math.Random to choose column
     var ab = new ArrayBuffer[Move]()
     for (c <- s.children) {
-      if (s.value == c.value) ab += c.children(0).lastMove
+      if (s.value == c.value) ab += c.lastMove
     }
     ab.toArray
   }
@@ -61,7 +62,7 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
       for (i <- 0 until s.children.length) {
         values(i) = s.children(i).value
       }
-      s.value = if (s.player == this.player) values.min else values.max
+      s.value = if (s.player == this.player) values.max else values.min
     }
   }
 

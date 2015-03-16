@@ -41,7 +41,7 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
    */
   def initializeChildren(): Unit = {
     val opposition: Player = if (player == YELLOW) RED else YELLOW
-    val moveArr = board.getPossibleMoves(opposition)
+    val moveArr = board.getPossibleMoves(player)
     children = length0
 
     for (m <- moveArr) {
