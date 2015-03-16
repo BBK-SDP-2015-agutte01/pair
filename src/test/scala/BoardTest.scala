@@ -32,7 +32,7 @@ class BoardTest extends FlatSpec with Matchers with BeforeAndAfterEach {
   }
 
   it should "return an array of Moves of length 0 when the board is full." in {
-    for (c <- 0 until 6) board.fillColumn(c)
+    for (c <- 0 until 7) board.fillColumn(c)
     board.getPossibleMoves(YELLOW) should have length 0
   }
 
