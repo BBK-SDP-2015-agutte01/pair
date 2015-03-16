@@ -25,12 +25,24 @@ class StateTest extends FlatSpec with Matchers with BeforeAndAfterEach {
 
   it should "not be able to add States to var children when initializeChildren is called and " +
     "the board is full." in {
-    for (c <- 0 until 6) {
+    for (c <- 0 until 7) {
       board.fillColumn(c)
     }
     val s = new State(YELLOW, board, m)
     s.initializeChildren()
     s.getChildren should have length 0
+  }
+
+  it should "create children States with the opponent as the player. " in {
+    val s = new State(YELLOW, board, null)
+    s.initializeChildren()
+    s.children(0).player should be(RED)
+  }
+
+  it should "create children States with their lastMoves as played by the player. " in {
+    val s = new State(YELLOW, board, null)
+    s.initializeChildren()
+    s.children(0).lastMove.player should be(YELLOW)
   }
 
 }
