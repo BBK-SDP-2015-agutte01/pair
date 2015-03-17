@@ -11,13 +11,32 @@ import scala.collection.mutable.ArrayBuffer
  */
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
+  /**
+   * Calculates the best next move or moves (where more than one moves are equally desirable) for this AI player
+   * @param b the board on which this player must make a move.
+   * @return an array containing the best next move or moves (where more than one moves are equally desirable) for this AI player.
+   */
   override def getMoves(b: Board): Array[Move] = {
     val s = new State(player, b, null)
     AI.createGameTree(s, depth)
 
     minimax(s)
 
-    decideMove(s)
+    val output = decideMove(s)
+
+    /**
+     * As the zeroth element in the returned array is chosen as the next move for this player, the 2 lines of code
+     * below can be optionally enabled to reduce the predictability of the AI player. When enabled (and more than
+     * one move is equally desirable for this player) getMoves will return a random move from the array of moves,
+     * determined using a random number generator.
+     *
+     * This means a human player cannot memorise what moves the AI will do in a given situation and then replicate that
+     * situation to win over and over again.
+     */
+    val random = scala.util.Random
+    output(0) = output(random.nextInt(output.length))
+
+    output
   }
 
   // for testing
@@ -43,10 +62,11 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     ab.toArray
   }
 
+
   /**
-   * State s is a node of a game tree (i.e. the current State of the game).
-   * Use the Minimax algorithm to assign a numerical value to each State of the
-   * tree rooted at s, indicating how desirable that State is to this player.
+   * Assigns a numerical value to each state of the tree rooted at the given
+   * state object 's'. This value indicated how desirable each state is to this AI player.
+   * @param s the root of the tree you wish to assign values to.
    */
   def minimax(s: State): Unit = {
 
@@ -98,16 +118,11 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
 
 object AI {
 
+
   /**
-   * Generate the game tree with root s of depth d.
-   * The game tree's nodes are State objects that represent the state of a game
-   * and whose children are all possible States that can result from the next move.
-   * <p/>
-   * NOTE: this method runs in exponential time with respect to d.
-   * With d around 5 or 6, it is extremely slow and will start to take a very
-   * long time to run.
-   * <p/>
-   * Note: If s has a winner (four in a row), it should be a leaf.
+   * Generates a game tree of the given depth using ths given state object 's' as the root.
+   * @param s the state you wish to create a game tree for.
+   * @param d the chosen depth for the game tree you wish to create.
    */
   def createGameTree(s: State, d: Int): Unit = {
     // Note: This method must be recursive, recurse on d,
