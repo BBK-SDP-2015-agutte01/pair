@@ -85,6 +85,36 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     }
   }
 
+  def minimax1(s: State): Unit = {
+
+    if (s.children.length > 0) {
+      for (c <- s.children) {
+        if (c.children.length > 0) minimax1(c)
+        else c.value = evaluateBoard(c.board)
+      }
+
+      // Assigns values to parent nodes based on the value of their children nodes
+      val values = new Array[Int](s.children.length)
+      for (i <- 0 until s.children.length) {
+        values(i) = s.children(i).value
+      }
+      s.value = if (s.player == this.player) values.max else values.min
+    }
+  }
+
+  def minimax2(s: State): Unit = {
+    if (s.children.length == 0){
+      s.value = evaluateBoard(s.board)
+    } else {
+      val values = new Array[Int](s.children.length)
+      for (i <- 0 until s.children.length) {
+        minimax2(s.children(i))
+        values(i) = s.children(i).value
+        }
+      s.value = if (s.player == this.player) values.max else values.min
+    }
+  }
+
 
   /**
    * Evaluate the desirability of Board b for this player

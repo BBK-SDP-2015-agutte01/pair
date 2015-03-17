@@ -178,6 +178,23 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     testRoot.children(0).value should be (max)
   }
 
+  "minimax 1 method" should "equal the same as minmax 2" in {
+    val aiTest1 = new AI(YELLOW, 5)
+    val aiTest2 = new AI(YELLOW, 5)
+    val stateTest1 = new State(YELLOW, new Board(), null)
+    val stateTest2 = new State(YELLOW, new Board(), null)
+
+    AI.createGameTree(stateTest1, 5)
+    AI.createGameTree(stateTest2, 5)
+    aiTest1.minimax1(stateTest1)
+    aiTest2.minimax2(stateTest2)
+
+    stateTest1.toString() should equal (stateTest2.toString())
+
+    println(stateTest1.toString())
+
+  }
+
   "A getBestMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
     val aiObject = new AI(testRoot.player, 2)
 
