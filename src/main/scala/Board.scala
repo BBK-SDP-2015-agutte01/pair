@@ -48,11 +48,11 @@ class Board {
   }
 
   /**
-   * Apply Move move to this Board by placing a piece from move's
-   * player into move's column on this Board.
-   * Throw an IllegalArgumentException if move's column is full on this Board.
+   * Applies the given move to this Board by placing a piece from the
+   * player defined by the given move object into the column defines by the given move object.
+   * @throws IllegalArgumentException if move's column is full on this Board.
    *
-   * @param move
+   * @param move the move you wish to make on this board.
    */
   def makeMove(move: Move): Unit = {
     if (getTop(move.column) != -1)
@@ -62,11 +62,11 @@ class Board {
 
   }
 
-  // TODO comments!
   /**
-   * @param column
-   * @param row
-   * @return
+   * Calculates the top position for the given column, returning -1 if the column is full.
+   * @param column the column for which you wish to find the top position
+   * @param row this should be left blank when calling the method as it is used for the tail recursive calls only.
+   * @return the top position for the given column, or returns -1 if the column is full.
    */
   @tailrec
   private def getTop(column: Int, row: Int = Board.NUM_ROWS - 1): Int = {
@@ -82,15 +82,21 @@ class Board {
    */
   def getTile(row: Int, col: Int): Player = board(row)(col)
 
+
   /**
-   * Return an array of all moves that can possibly be made by Player p on this
-   * board. The moves must be in order of increasing column number.
-   * Note: The length of the array must be the number of possible moves.
+   * Calculates all moves that can be made on this board by the given player.
+   * The moves are in order of increasing column number.
+   *
+   * Note: The length of the array is the number of possible moves.
    * Note: If the board has a winner (four things of the same colour in a row), no
    * move is possible because the game is over.
    * Note: If the game is not over, the number of possible moves is the number
-   * of columns that are not full. Thus, if all columns are full, return an
+   * of columns that are not full. Thus, if all columns are full, this method returns an
    * array of length 0.
+   *
+   * @param p the player for which you want to find the possible moves.
+   * @return an array of all moves that can possibly be made by Player p on this
+   * board.
    */
   def getPossibleMoves(p: Player): Array[Move] = {
     val output = new ArrayBuffer[Move]

@@ -33,11 +33,7 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
 
   /**
    * Retrieves the possible moves and initializes this State's children.
-   * The result is that this State's children reflect the possible
-   * States that can exist after the next move. Remember, in the
-   * children it is the opposite player's turn. This method
-   * initializes only this State's children; it does not recursively
-   * initialize all descendants.
+   *
    */
   def initializeChildren(): Unit = {
     val opposition: Player = if (player == YELLOW) RED else YELLOW
