@@ -11,9 +11,9 @@ class AITest extends FlatSpec with MockFactory with Matchers with BeforeAndAfter
   var testChildren = Array[State]()
   var testBoard: Board = _
   var testRoot: State = _
-  val redMove1 = new Move(RED, 0)
-  val redMove2 = new Move(RED, 5)
-  val redMove3 = new Move(RED, 6)
+  val redMove0 = new Move(RED, 0)
+  val redMove5 = new Move(RED, 5)
+  val redMove6 = new Move(RED, 6)
   val yellowMove1 = new Move(YELLOW, 1)
   val yellowMove2 = new Move(YELLOW, 2)
   val yellowMove3 = new Move(YELLOW, 3)
@@ -21,13 +21,13 @@ class AITest extends FlatSpec with MockFactory with Matchers with BeforeAndAfter
   //Creates a standardised board and state before each test
   override def beforeEach() {
     testBoard = Board()
-    testRoot = new State(YELLOW, testBoard, redMove3)
+    testRoot = new State(YELLOW, testBoard, redMove6)
     testBoard.makeMove(yellowMove1)
-    testBoard.makeMove(redMove1)
+    testBoard.makeMove(redMove0)
     testBoard.makeMove(yellowMove2)
-    testBoard.makeMove(redMove2)
+    testBoard.makeMove(redMove5)
     testBoard.makeMove(yellowMove3)
-    testBoard.makeMove(redMove3)
+    testBoard.makeMove(redMove6)
   }
 
 
@@ -179,28 +179,68 @@ class AITest extends FlatSpec with MockFactory with Matchers with BeforeAndAfter
     testRoot.children(0).value should be (min)
   }
 
+  "A getBestMoves method" should "with a depth of 1, return an array of length 1 with " +
+    "a Move of column 0 if the player has 3 discs in a row in column 0." in {
+    val aiObject = new AI(RED, 1)
 
-  "A getBestMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
-    val aiObject = new AI(testRoot.player, 2)
+    testBoard.makeMove(redMove0)
+    testBoard.makeMove(redMove0)
 
-    testBoard.makeMove(redMove1)
-    testBoard.makeMove(redMove1)
-
-    aiObject.getBestMoves(testBoard)(0).column should equal (redMove1.column)
+    aiObject.getBestMoves(testBoard)(0).column should equal (0)
   }
 
-//  inAnyOrder {
-//    val aiMock = mock[AI]
-//    val boardStub = stub[Board()]
-//
-//    (aiMock.getMoves(boardStub) _).expects(AI.createGameTree(), *, *)
-//    (httpClient.sendRequest _).expects(Method.POST, "http://scalamock.org", *).noMoreThanOnce
-//    (httpClient.sendRequest _).expects(Method.POST, "http://example.com", *).returning(Http.NotFound)
-//    inSequence {
-//      (counterMock.increment _) expects(*) onCall { arg: Int => arg + 1}
-//      (counterMock.decrement _) expects(*) onCall { throw new RuntimeException() }
-//    }
-//  }
+  it should "with a depth of 2, return an array of length 1 with a Move of column 0 if " +
+    "the player has 3 discs in a row in column 0." in {
+    val aiObject = new AI(RED, 2)
 
+    testBoard.makeMove(redMove0)
+    testBoard.makeMove(redMove0)
+
+    aiObject.getBestMoves(testBoard)(0).column should equal (0)
+  }
+
+  it should "with a depth of 2, return an array of length 1 with a Move of column 0 if " +
+    "the opponent has 3 discs in a row in column 0." in {
+    val aiObject = new AI(YELLOW, 2)
+
+    testBoard.makeMove(redMove0)
+    testBoard.makeMove(redMove0)
+
+    aiObject.getBestMoves(testBoard)(0).column should equal (0)
+  }
+
+  it should "with a depth of 3, return an array of length 1 with a Move of column 0 if " +
+    "the opponent has 3 discs in a row in column 0." in {
+    val aiObject = new AI(YELLOW, 3)
+
+    testBoard.makeMove(redMove0)
+    testBoard.makeMove(redMove0)
+
+    aiObject.getBestMoves(testBoard)(0).column should equal (0)
+  }
+
+  it should "with a depth of 1, return an array of length 1 with a Move of column 4 if the player has " +
+    "3 discs in a row in columns 1 to 3." in {
+    val aiObject = new AI(YELLOW, 1)
+    aiObject.getBestMoves(testBoard)(0).column should equal (4)
+  }
+
+  it should "with a depth of 2, return an array of length 1 with a Move of column 4 if the player has " +
+    "3 discs in a row in columns 1 to 3." in {
+    val aiObject = new AI(YELLOW, 2)
+    aiObject.getBestMoves(testBoard)(0).column should equal (4)
+  }
+
+  it should "with a depth of 2, return an array of length 1 with a Move of column 4 if the opponent has " +
+    "3 discs in a row in columns 1 to 3." in {
+    val aiObject = new AI(RED, 2)
+    aiObject.getBestMoves(testBoard)(0).column should equal (4)
+  }
+
+  it should "with a depth of 3, return an array of length 1 with a Move of column 4 if the opponent has " +
+    "3 discs in a row in columns 1 to 3." in {
+    val aiObject = new AI(RED, 3)
+    aiObject.getBestMoves(testBoard)(0).column should equal (4)
+  }
 
 }
