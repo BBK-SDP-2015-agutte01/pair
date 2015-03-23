@@ -34,7 +34,7 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     output
   }
 
-  // for testing
+  // deterministic variant of getMoves, created for testing
   def getBestMoves(b: Board): Array[Move] = {
     val s = new State(player, b, null)
     AI.createGameTree(s, depth)
@@ -43,7 +43,7 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     val ab = new ArrayBuffer[Move]()
     for (c <- s.children) {
       if (s.value == c.value)
-        ab += c.children(0).lastMove
+        ab += c.lastMove
     }
     ab.toArray
   }
