@@ -1,58 +1,43 @@
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{BeforeAndAfterEach, FlatSpec, Matchers}
 
 /** Test class for AI
   *
   */
-class AITest extends FlatSpec with MockFactory with Matchers {
-
-  val board = Board()
-
+class AITest extends FlatSpec with MockFactory with Matchers with BeforeAndAfterEach {
+  //Fixtures used in more than one test
+  var count = 0
+  var depth = 0
+  var testChildren = Array[State]()
+  var testBoard: Board = _
+  var testRoot: State = _
   val redMove1 = new Move(RED, 0)
   val redMove2 = new Move(RED, 5)
   val redMove3 = new Move(RED, 6)
   val yellowMove1 = new Move(YELLOW, 1)
   val yellowMove2 = new Move(YELLOW, 2)
   val yellowMove3 = new Move(YELLOW, 3)
-  var count = 0
-  var depth = 0
-  var testChildren = Array[State]()
 
-  board.makeMove(yellowMove1)
-  board.makeMove(redMove1)
-  board.makeMove(yellowMove2)
-  board.makeMove(redMove2)
-  board.makeMove(yellowMove3)
-  board.makeMove(redMove3)
+  //Creates a standardised board and state before each test
+  override def beforeEach() {
+    testBoard = Board()
+    testRoot = new State(YELLOW, testBoard, redMove3)
+    testBoard.makeMove(yellowMove1)
+    testBoard.makeMove(redMove1)
+    testBoard.makeMove(yellowMove2)
+    testBoard.makeMove(redMove2)
+    testBoard.makeMove(yellowMove3)
+    testBoard.makeMove(redMove3)
+  }
 
-  val root = new State(YELLOW, board, redMove3)
-  val board1 = Board(board)
-  val board2 = Board(board)
-  val board3 = Board(board)
-  val testBoard = Board(board)
-  val testRoot = new State(YELLOW, testBoard, redMove3)
-
-
-
-  board1.makeMove(new Move(YELLOW, 0))
-  val oneLevelChild0 = new State(RED, board1, null)
-
-  board2.makeMove(new Move(YELLOW, 3))
-  board2.makeMove(new Move(RED, 3))
-  val twoLevelsChild3Child3 = new State(YELLOW, board2, null)
-
-  board3.makeMove(new Move(YELLOW, 6))
-  board3.makeMove(new Move(RED, 3))
-  board3.makeMove(new Move(YELLOW, 5))
-  val threeLevel3Child6Child3Child5 = new State(RED, board3, null)
 
   "A createGameTree method" should "generate a game tree of the given depth(0) by utilising the variable " +
     "children: Array[State] in each state object." in {
     depth = 0
     count = 0
 
-    AI.createGameTree(root, depth)
-    testChildren = root.children
+    AI.createGameTree(testRoot, depth)
+    testChildren = testRoot.children
 
     while (testChildren.length > 0) {
       count += 1
@@ -67,8 +52,8 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     depth = 3
     count = 0
 
-    AI.createGameTree(root, depth)
-    testChildren = root.children
+    AI.createGameTree(testRoot, depth)
+    testChildren = testRoot.children
 
     while (testChildren.length > 0) {
       count += 1
@@ -83,8 +68,8 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     depth = 4
     count = 0
 
-    AI.createGameTree(root, depth)
-    testChildren = root.children
+    AI.createGameTree(testRoot, depth)
+    testChildren = testRoot.children
 
     while (testChildren.length > 0) {
       count += 1
@@ -99,8 +84,8 @@ class AITest extends FlatSpec with MockFactory with Matchers {
     depth = 5
     count = 0
 
-    AI.createGameTree(root, depth)
-    testChildren = root.children
+    AI.createGameTree(testRoot, depth)
+    testChildren = testRoot.children
 
     while (testChildren.length > 0) {
       count += 1
@@ -111,6 +96,22 @@ class AITest extends FlatSpec with MockFactory with Matchers {
   }
 
   it should "generate the expected state nodes at each level" in {
+
+    val board1 = Board(testBoard)
+    val board2 = Board(testBoard)
+    val board3 = Board(testBoard)
+
+    board1.makeMove(new Move(YELLOW, 0))
+    val oneLevelChild0 = new State(RED, board1, null)
+
+    board2.makeMove(new Move(YELLOW, 3))
+    board2.makeMove(new Move(RED, 3))
+    val twoLevelsChild3Child3 = new State(YELLOW, board2, null)
+
+    board3.makeMove(new Move(YELLOW, 6))
+    board3.makeMove(new Move(RED, 3))
+    board3.makeMove(new Move(YELLOW, 5))
+    val threeLevel3Child6Child3Child5 = new State(RED, board3, null)
 
     AI.createGameTree(testRoot, 1)
     oneLevelChild0.toString() should be(testRoot.children(0).toString())
@@ -182,10 +183,10 @@ class AITest extends FlatSpec with MockFactory with Matchers {
   "A getBestMoves method" should "return an array of length 1 with a Move of column 4 as its best move." in {
     val aiObject = new AI(testRoot.player, 2)
 
-    board3.makeMove(redMove1)
-    board3.makeMove(redMove1)
+    testBoard.makeMove(redMove1)
+    testBoard.makeMove(redMove1)
 
-    aiObject.getBestMoves(board3)(0).column should equal (redMove1.column)
+    aiObject.getBestMoves(testBoard)(0).column should equal (redMove1.column)
   }
 
 //  inAnyOrder {
