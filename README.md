@@ -1,8 +1,7 @@
-Connect 4 (Pair Programming)
-============================
+#Connect 4 (Pair Programming)
 
-Assignment Two of the SDP Module
----------------------------------
+
+##Assignment Two of the SDP Module
 
 This is a pair programming assignment required as a part of the Software Design and Programming module of the 
 Birkbeck MSc. Computer Science course. In this assignment we were required to add AI to a Connect 4 game.
