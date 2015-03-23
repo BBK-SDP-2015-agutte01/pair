@@ -18,33 +18,33 @@ class AITest extends FlatSpec with MockFactory with Matchers {
   var depth = 0
   var testChildren = Array[State]()
 
-  board.makeMove(redMove1)
   board.makeMove(yellowMove1)
-  board.makeMove(redMove2)
+  board.makeMove(redMove1)
   board.makeMove(yellowMove2)
-  board.makeMove(redMove3)
+  board.makeMove(redMove2)
   board.makeMove(yellowMove3)
+  board.makeMove(redMove3)
 
-  val root = new State(YELLOW, board, yellowMove3)
+  val root = new State(YELLOW, board, redMove3)
   val board1 = Board(board)
   val board2 = Board(board)
   val board3 = Board(board)
   val testBoard = Board(board)
-  val testRoot = new State(YELLOW, testBoard, yellowMove3)
+  val testRoot = new State(YELLOW, testBoard, redMove3)
 
 
 
-  board1.makeMove(new Move(RED, 0))
-  val oneLevelChild0 = new State(RED, board1, new Move(RED, 0))
+  board1.makeMove(new Move(YELLOW, 0))
+  val oneLevelChild0 = new State(RED, board1, null)
 
-  board2.makeMove(new Move(RED, 3))
   board2.makeMove(new Move(YELLOW, 3))
-  val twoLevelsChild3Child3 = new State(YELLOW, board2, yellowMove3)
+  board2.makeMove(new Move(RED, 3))
+  val twoLevelsChild3Child3 = new State(YELLOW, board2, null)
 
-  board3.makeMove(new Move(RED, 6))
-  board3.makeMove(new Move(YELLOW, 3))
-  board3.makeMove(new Move(RED, 5))
-  val threeLevel3Child6Child3Child5 = new State(RED, board3, redMove2)
+  board3.makeMove(new Move(YELLOW, 6))
+  board3.makeMove(new Move(RED, 3))
+  board3.makeMove(new Move(YELLOW, 5))
+  val threeLevel3Child6Child3Child5 = new State(RED, board3, null)
 
   "A createGameTree method" should "generate a game tree of the given depth(0) by utilising the variable " +
     "children: Array[State] in each state object." in {
@@ -162,9 +162,9 @@ class AITest extends FlatSpec with MockFactory with Matchers {
       if (c.value > max) max = c.value
       if (c.value < min) min = c.value
     }
-    testRoot.children(0).children(0).value should be (min)
+    testRoot.children(0).children(0).value should be (max)
 
-    // now testing if value of parent of leaves is equal to max of leaf values
+    // now testing if value of parent of leaves is equal to min of leaf values
     val nodes = testRoot.children(0).children
 
     max = nodes(0).value
@@ -175,7 +175,7 @@ class AITest extends FlatSpec with MockFactory with Matchers {
       if (n.value < min) min = n.value
     }
 
-    testRoot.children(0).value should be (max)
+    testRoot.children(0).value should be (min)
   }
 
 
