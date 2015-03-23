@@ -13,7 +13,7 @@ We were instructed to only complete/change the following classes:
 * AI
 * Game (for testing purposes)
 
-**Examiners:** Please note the pair working on this submission was:
 
+**Examiners:** Please note the pair working on this submission was:
 * Arron Hormoz (Student username: ahormo01)
 * Alice Gutteridge (Student username: agutte01)
