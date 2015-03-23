@@ -13,6 +13,6 @@ We were instructed to only complete/change the following classes:
 * Game (for testing purposes)
 
 
-####Examiners, please note the pair who worked on this submission was:
+####Examiners, please note the students on this submission were:
 * Arron Hormoz (Student username: ahormo01)
 * Alice Gutteridge (Student username: agutte01)
