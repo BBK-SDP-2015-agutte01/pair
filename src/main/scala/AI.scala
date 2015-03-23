@@ -19,20 +19,15 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
   override def getMoves(b: Board): Array[Move] = {
     val s = new State(player, b, null)
     AI.createGameTree(s, depth)
-
     minimax(s)
-
     val output = decideMove(s)
-
-    /**
-     * As the zeroth element in the returned array is chosen as the next move for this player, the 2 lines of code
-     * below can be optionally enabled to reduce the predictability of the AI player. When enabled (and more than
-     * one move is equally desirable for this player) getMoves will return a random move from the array of moves,
-     * determined using a random number generator.
-     *
-     * This means a human player cannot memorise what moves the AI will do in a given situation and then replicate that
-     * situation to win over and over again.
-     */
+    // As the zeroth element in the returned array will be chosen as the next move for this player, the 2 lines of code
+    // below can be optionally enabled to reduce the predictability of the AI player. When enabled (and more than
+    // one move is equally desirable for this player) getMoves will return a random move from the array of moves,
+    // determined using a random number generator.
+    //
+    // This means a human player cannot memorise what moves the AI will do in a given situation and then replicate that
+    // situation to win over and over again.
     val random = scala.util.Random
     output(0) = output(random.nextInt(output.length))
 
@@ -54,7 +49,6 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
   }
 
    private def decideMove(s: State): Array[Move] = {
-    // decide probability for each column, then use Math.Random to choose column
     val ab = new ArrayBuffer[Move]()
     for (c <- s.children) {
       if (s.value == c.value) ab += c.lastMove
