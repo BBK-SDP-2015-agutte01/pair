@@ -204,7 +204,7 @@ class Board {
 
     while (top != -1) {
 
-      for (i <- 0 to Board.NUM_ROWS - 1) {
+      for (i <- 0 until Board.NUM_ROWS) {
 
         if (i % 2 == 0) {
           makeMove(new Move(p1, c))

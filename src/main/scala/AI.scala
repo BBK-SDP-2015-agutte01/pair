@@ -45,7 +45,7 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     AI.createGameTree(s, depth)
     minimax(s)
 
-    var ab = new ArrayBuffer[Move]()
+    val ab = new ArrayBuffer[Move]()
     for (c <- s.children) {
       if (s.value == c.value)
         ab += c.children(0).lastMove
@@ -55,7 +55,7 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
 
    private def decideMove(s: State): Array[Move] = {
     // decide probability for each column, then use Math.Random to choose column
-    var ab = new ArrayBuffer[Move]()
+    val ab = new ArrayBuffer[Move]()
     for (c <- s.children) {
       if (s.value == c.value) ab += c.lastMove
     }
@@ -69,13 +69,13 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
    * @param s the root of the tree you wish to assign values to.
    */
   def minimax(s: State): Unit = {
-    if (s.children.length == 0){
+    if (s.children.isEmpty){
       s.value = evaluateBoard(s.board)
     } else {
       val values = new Array[Int](s.children.length)
       for (i <- 0 until s.children.length) {
         minimax(s.children(i))
-        values(i) = s.children(i).value
+        values.update(i, s.children(i).value)
         }
       s.value = if (s.player == this.player) values.max else values.min
     }
