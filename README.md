@@ -14,6 +14,6 @@ We were instructed to only complete/change the following classes:
 * Game (for testing purposes)
 
 
-**Examiners:** Please note the pair who worked on this submission was:
+######**Examiners:** Please note the pair who worked on this submission was:
 * Arron Hormoz (Student username: ahormo01)
 * Alice Gutteridge (Student username: agutte01)
